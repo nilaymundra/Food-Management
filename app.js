@@ -1,13 +1,28 @@
-const { json } = require('body-parser');
 const express = require('express');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const ejs = require('ejs');
+
 const app = express();
 
-app.set('view engine', 'ejs');
+dotenv.config();
+app.use(express.static("public"));
+app.set("view engine", "ejs");
 
+const url = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000
 
 app.get('/', (req, res) => {
-    res.send('<h1>This is a test page</h1>')
+    res.render('home.ejs');
+})
+
+mongoose.connect(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Successfully connected to the database');
+}).catch(error => {
+    console.log(error);
 })
 
 app.listen(PORT, () => {
