@@ -9,9 +9,11 @@ const UserSchema = new mongoose.Schema({
     },
     mobileNumber: {
         type: Number,
-        required: [true, 'Mobile Number is required'],
-        min: [10, 'ENter a correct mobile number'],
-        max: [10, 'ENter a correct mobile number']
+
+        //Add mobile number verification in the front end
+        // required: [true, 'Mobile Number is required'],
+        min: [10, 'Enter a correct mobile number'],
+        max: [10, 'Enter a correct mobile number']
     },
     emailId: {
         type: String,
@@ -31,12 +33,12 @@ const UserSchema = new mongoose.Schema({
     },
     city: {
         type: String,
-        required: [true, 'Please select a city'],
+        // required: [true, 'Please select a city'],
         trim: true
     },
     pinCode: {
         type: Number,
-        required: [true, 'Enter the pincode'],
+        // required: [true, 'Enter the pincode'],
         validate: {
             validator: function(input) {
                 return /^[1-9]{1}[0-9]{2}\\s{0, 1}[0-9]{3}$/.test(input);
