@@ -76,6 +76,15 @@ app.get('/register', checkAuthenticated, (req, res) => {
     res.render('register');
 })
 
+app.post('/register',(req,res)=> {
+    const user = Users.findOneAndUpdate({emailId: req.body.emailId}, req.body)
+    console.log(user);
+})
+
+app.get('/profile',(req,res) => {
+
+})
+
 mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true

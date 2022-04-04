@@ -5,5 +5,32 @@
 <body>
 
     <h1>Register</h1>
+    <form action="/register" method="PUT">
+        <div class="mobileNumber">
+            <label for="mobileNumber">Phone Number</label>
+            <input type="num" name="mobileNumber" id="mobileNumber" required>
+        </div>
+        <div class="street">
+            <label for="street">Street</label>
+            <input type="text" name="street" id="street">
+        </div>
+        <div class="city">
+            <label for="city">City</label>
+            <input type="text" name="city" id="city" required>
+        </div>
+        <div class="pinCode">
+            <label for="pinCode">Pin Code</label>
+            <input type="num" name="pinCode" id="pinCode" required>
+        </div>        
 
+        <input type="hidden" name="emaiId" value="nilaysmundra@gmail.com">
+
+        <input type="submit" value="Register">
+    </form>
+
+    <script>
+        function validphone(phone) {
+
+        }
+    </script>
 <% include('partials/footer') %>
