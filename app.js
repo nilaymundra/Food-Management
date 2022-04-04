@@ -7,7 +7,6 @@ const cookieParser = require('cookie-parser')
 const {OAuth2Client} = require('google-auth-library');
 const Users = require('./models/Users');
 
-
 const app = express();
 
 dotenv.config();
@@ -27,6 +26,7 @@ app.get('/', (req, res) => {
 })
 
 const read = require('body-parser/lib/read');
+const registerUser = require('./contollers/register');
 
 app.get('/login', (req, res) => {
     res.render('login');
@@ -73,16 +73,15 @@ app.post('/login', (req, res) => {
 
 
 app.get('/register', checkAuthenticated, (req, res) => {
-    res.render('register');
+    let user = req.user;
+    res.render('register', {user: user});
 })
 
-app.post('/register',(req,res)=> {
-    const user = Users.findOneAndUpdate({emailId: req.body.emailId}, req.body)
-    console.log(user);
-})
+app.post('/register', checkAuthenticated, registerUser)
 
-app.get('/profile',(req,res) => {
-
+app.get('/profile', (req,res) => {
+    let user = req.user;
+    res.send(user);
 })
 
 mongoose.connect(url, {

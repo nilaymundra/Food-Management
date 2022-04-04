@@ -5,7 +5,10 @@
 <body>
 
     <h1>Register</h1>
-    <form action="/register" method="PUT">
+
+    <h4>Hello <%= user.name %> </h4>
+
+    <form action="/register" method="POST">
         <div class="mobileNumber">
             <label for="mobileNumber">Phone Number</label>
             <input type="num" name="mobileNumber" id="mobileNumber" required>
@@ -23,9 +26,9 @@
             <input type="num" name="pinCode" id="pinCode" required>
         </div>        
 
-        <input type="hidden" name="emaiId" value="nilaysmundra@gmail.com">
+        <input type="hidden" name="emailId" value=<%= user.email %>>
 
-        <input type="submit" value="Register">
+        <button type="submit" class="btn btn-dark">Submit</button>
     </form>
 
     <script>
