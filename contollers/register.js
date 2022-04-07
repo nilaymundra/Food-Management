@@ -12,7 +12,8 @@ const registerUser = async (req, res) => {
             mobileNumber: req.body.mobileNumber,
                 street: req.body.street,
                 city: req.body.city,
-                pinCode: req.body.pinCode
+                pinCode: req.body.pinCode,
+                kind: req.body.kind
             }, {
             new: true
         })

@@ -39,10 +39,10 @@
         xhr.onload = function() {
             console.log('Signed in as: ' + xhr.responseText);
             if(xhr.responseText == 'success true'){
-                signOut();
+                // signOut();
                 location.assign('/register')
             } else if (xhr.responseText == 'success false'){
-                signOut();
+                // signOut();
                 location.assign('/profile')
             }
         };

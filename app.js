@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 const {OAuth2Client} = require('google-auth-library');
 const Users = require('./models/Users');
+const Request = require('./models/Requests');
 
 const app = express();
 
@@ -79,9 +80,16 @@ app.get('/register', checkAuthenticated, (req, res) => {
 
 app.post('/register', checkAuthenticated, registerUser)
 
-app.get('/profile', (req,res) => {
+app.get('/profile', checkAuthenticated, (req,res) => {
     let user = req.user;
-    res.send(user);
+    console.log(user);
+    res.render('profile', {user: user});
+})
+
+app.get('/logout', (req, res)=>{
+    res.clearCookie('session-token');
+    res.redirect('/login')
+
 })
 
 mongoose.connect(url, {

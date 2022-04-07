@@ -28,6 +28,14 @@
 
         <input type="hidden" name="emailId" value=<%= user.email %>>
 
+        <div class="type">
+            <input type="radio" name="kind" value="buyer" required id="buyer">
+            <label for="buyer">Buyer</label>
+
+            <input type="radio" name="kind" value="seller" id="seller">
+            <label for="seller">Seller</label>
+        </div>
+
         <button type="submit" class="btn btn-dark">Submit</button>
     </form>
 
