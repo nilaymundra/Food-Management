@@ -8,6 +8,14 @@ const RequestSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
+    },
+    state: {
+        type: String,
+        required: true
+    },
+    buyer: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: null
     }
 })
 

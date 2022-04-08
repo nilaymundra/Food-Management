@@ -17,7 +17,7 @@ const registerUser = async (req, res) => {
             }, {
             new: true
         })
-        res.json(newUser);
+        res.redirect('/profile');
     } catch (error) {
         console.log(error);
     }
