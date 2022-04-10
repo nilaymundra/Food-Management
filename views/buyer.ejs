@@ -1,0 +1,44 @@
+<%- include('partials/header') %>
+
+    <title>Buyer</title>
+</head>
+<body>
+
+    <h1>Hey there <%= user.name %></h1>
+    <a href="/logout">LogOut</a>
+
+    <h1>Here are all the available sellers from where you can buy</h1>
+
+    <h1>Seller list</h1>
+
+    <% allUser.forEach(singleUser => { %>
+
+        <% if (singleUser.kind === "seller" && singleUser.requestActive > 0) { %>
+            <h3><%= singleUser.name %></h3>
+            <h3><%= singleUser.emailId %></h3>
+            <h3><%= singleUser.mobileNumber %></h3>
+            <h3><%= singleUser.city %></h3>
+            <h3><%= singleUser.pinCode %></h3>
+            <h3><%= singleUser.requestActive %></h3>
+            
+
+            <form action="/buyer" method="post">
+                <input type="hidden" name="buyer_id" value=<%= user._id %>>
+                <input type="hidden" name="seller_id" value=<%= singleUser._id %>>
+                <button type="submit" class="btn btn-dark">Enter Your request</button>
+            </form>
+
+        <% } %>
+
+    <% }) %>
+
+        <h1>Accepted Requests</h1>
+
+        <% allRequest.forEach(singleRequest => { %>
+            
+            <p><%= singleRequest %></p>
+
+        <% }) %>
+
+
+<%- include('partials/footer') %>

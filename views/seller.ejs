@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+
+    <title>Buyer</title>
+</head>
+<body>
+
+    <h1>Hey there <%= user.name %></h1>
+    <a href="/logout">LogOut</a>
+
+    <form action="/seller" method="post">
+        <input type="hidden" name="owner_id" value=<%= user._id %>>
+        <button type="submit" class="btn btn-dark">Create Your request</button>
+    </form>
+
+    <h1>Generated Request and Status</h1>
+
+    <p><%= allRequest %></p>
+
+<%- include('partials/footer') %>

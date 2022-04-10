@@ -28,8 +28,6 @@ app.get('/', (req, res) => {
 
 const read = require('body-parser/lib/read');
 const registerUser = require('./contollers/register');
-const User = require('./models/Users');
-const req = require('express/lib/request');
 
 app.get('/login', (req, res) => {
     res.render('login');
@@ -82,75 +80,114 @@ app.get('/register', checkAuthenticated, (req, res) => {
 
 app.post('/register', checkAuthenticated, registerUser)
 
-app.get('/profile', checkAuthenticated, async (req,res) => {
-
-    const user1 = req.user;
-    const user = await Users.findOne({emailId: user1.email})
-
-    const allRequest = await Request.find({});
-    let reqArray = [];
-    let userArray = [];
-
-    let acceptArray = [];
-    let acceptOwner = [];
-
-    //Here forEach cannot be used as it makes a mess of the async await function
-    for (const oneReq of allRequest) {
-        const newUser = await Users.findById(oneReq.owner);
-
-        if ((newUser.emailId !== user.emailId) && (newUser.kind === oneReq.kind) && oneReq.state !== "sold"){
-            reqArray.push(oneReq);
-            userArray.push(newUser);    
-        }
-
-        if (oneReq.state === "sold"){
-            const acceptUser = await Users.findById(oneReq.buyer);
-            acceptArray.push(oneReq);
-            acceptOwner.push(acceptUser);
-        }
-    }; 
-
-    res.render('profile', {user: user, requests: reqArray, reqUser: userArray, accepts: acceptArray, acceptUser: acceptOwner});
+app.get('/profile', checkAuthenticated, async (req, res) => {
+    const user = await Users.findOne({emailId: req.user.email});
+    
+    if (user.kind === 'buyer'){
+        res.redirect('/buyer');
+    } else if (user.kind === 'seller'){
+        res.redirect('/seller');
+    } else {
+        res.redirect('/register')
+    }
 })
-app.post('/profile', checkAuthenticated, async (req, res) => {    
+
+app.get('/buyer', checkAuthenticated, async (req, res) => {
+    const user = await Users.findOne({emailId: req.user.email});
+    if (user.kind === 'seller'){
+        res.redirect('/seller');
+    } else if (user.kind === 'buyer'){
+        const allUser = await Users.find({});
+        const allRequest = await Request.find({
+            buyer: user._id,
+            state: 'sold'
+        })
+        res.render('buyer', {user: user, allUser: allUser, allRequest: allRequest});
+    } else {
+        res.redirect('register');
+    }
+});
+app.post('/buyer', checkAuthenticated, async (req, res) => {
+    const buyer = await Users.findById(req.body.buyer_id);
+    const seller = await Users.findById(req.body.seller_id);
+    const request = await Request.findOne({
+        owner: req.body.seller_id,
+        state: 'available'
+    });
+
+    // console.log(request);
+
+    const newReq = await Request.findOneAndUpdate({
+        owner: req.body.seller_id,
+        state: 'available'
+    }, {
+        state: 'sold',
+        buyer: buyer._id
+    }, {
+        new: true
+    });
+
+    // console.log(newReq);
+
+    await Users.findByIdAndUpdate(req.body.buyer_id, {
+        requestAccepted: request._id
+    }, {
+        new: true
+    });
+
+    await Users.findByIdAndUpdate(req.body.seller_id, {
+        requestActive: seller.requestActive - 1
+    }, {
+        new: true
+    });
+    
+    res.redirect('/buyer')
+});
+
+app.get('/seller', checkAuthenticated, async (req, res) => {
+    const user = await Users.findOne({emailId: req.user.email});
+    if (user.kind === 'buyer'){
+        res.redirect('/buyer');
+    } else if (user.kind === 'seller'){
+        const allUser = await Users.find({});
+        const allRequest = await Request.find({owner: user._id})
+        res.render('seller', {user: user, allUser: allUser, allRequest: allRequest});
+    } else {
+        res.redirect('register');
+    }
+});
+
+app.post('/seller', checkAuthenticated, async(req, res) => {
     let request = {};
     try{
         const newRequest = {
-            kind: req.body.kind,
-            owner: req.body.owner,
+            owner: req.body.owner_id,
             state: 'available'
         }
         request = await Request.create(newRequest);
 
-        const user = await Users.findById(req.body.owner)
+        const user = await Users.findById(req.body.owner_id);
+        // console.log(user);
         user.requestGenerated.push(request._id)
 
-        await User.findByIdAndUpdate(req.body.owner, {
-            requestGenerated: user.requestGenerated
+        await Users.findByIdAndUpdate(req.body.owner_id, {
+            requestGenerated: user.requestGenerated,
+            requestActive: user.requestActive + 1
         }, {
             new: true
         });
     
-        res.redirect('/profile');
-        } catch(err){
+        res.redirect('/seller');
+    } catch(err){
         console.log(err);
-    }
+    }    
+    
 })
 
-app.post('/accept', async (req, res) => {
-    const reqAccept = await Request.findByIdAndUpdate(req.body.id, {
-        state: "sold",
-        buyer: req.body.user_id
-    }, {
-        new: true
-    })
-    res.redirect('/profile');
-})
-
-app.get('/logout', (req, res)=>{
+app.get('/logout', (req, res) => {
     user1 = '';
     res.clearCookie('session-token');
-    res.redirect('/login')
+    res.redirect('/')
 })
 
 mongoose.connect(url, {

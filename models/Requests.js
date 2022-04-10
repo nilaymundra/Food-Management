@@ -1,17 +1,14 @@
 const mongoose = require('mongoose');
 
 const RequestSchema = new mongoose.Schema({
-    kind: {
-        type: String,
-        required: true
-    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     state: {
         type: String,
-        required: true
+        required: true,
+        default: 'available'
     },
     buyer: {
         type: mongoose.Schema.Types.ObjectId,

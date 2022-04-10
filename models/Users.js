@@ -56,7 +56,14 @@ const UserSchema = new mongoose.Schema({
     },
     requestGenerated: [{
         type: mongoose.Schema.Types.ObjectId
-    }]
+    }],
+    requestAccepter: [{
+        type: mongoose.Schema.Types.ObjectId
+    }],
+    requestActive: {
+        type: Number,
+        default: 0
+    }
 })
 
 const User = mongoose.model('user', UserSchema);
