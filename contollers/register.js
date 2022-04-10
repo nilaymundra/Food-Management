@@ -1,8 +1,6 @@
 const Users = require('../models/Users');
 
-const registerUser = async (req, res) => {
-    console.log(req.body);
-  
+const registerUser = async (req, res) => {  
     try{
         const user = await Users.findOne({emailId: req.body.emailId})
 
@@ -23,4 +21,4 @@ const registerUser = async (req, res) => {
     }
 }
 
-module.exports = registerUser;
+module.exports = {registerUser};

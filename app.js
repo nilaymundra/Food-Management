@@ -1,12 +1,10 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 const {OAuth2Client} = require('google-auth-library');
 const Users = require('./models/Users');
-const Request = require('./models/Requests');
 
 const app = express();
 
@@ -17,22 +15,23 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
     
-const url = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
+const connectDB = require('./db/connect');
+const {getProfile} = require('./contollers/profile');
+const {registerUser} = require('./contollers/register');
+const {getBuyer, getSeller} = require('./contollers/user');
+const {acceptRequest, createRequest} = require('./contollers/request');
 
-app.get('/', (req, res) => {
+
+app.route('/').get((req, res) => {
     res.render('home.ejs');
 })
 
-const read = require('body-parser/lib/read');
-const registerUser = require('./contollers/register');
-
-app.get('/login', (req, res) => {
-    res.render('login');
-})
-app.post('/login', (req, res) => {
+app.route('/login')
+.get( (req, res) => res.render('login'))
+.post((req, res) => {
 
     let tokenId = req.body.tokenId;
     
@@ -62,8 +61,6 @@ app.post('/login', (req, res) => {
             }
             user = await Users.create(userNew);
         }
-
-        user1 = user;
     }
 
     verifyUser().then(() => {
@@ -73,130 +70,28 @@ app.post('/login', (req, res) => {
     .catch(console.error)
 })
 
-app.get('/register', checkAuthenticated, (req, res) => {
-    let user = req.user;
-    res.render('register', {user: user});
-})
+app.route('/register')
+.get(checkAuthenticated, (req, res) => res.render('register', {user: req.user}))
+.post(checkAuthenticated, registerUser);
 
-app.post('/register', checkAuthenticated, registerUser)
+app.route('/profile').get(checkAuthenticated, getProfile)
 
-app.get('/profile', checkAuthenticated, async (req, res) => {
-    const user = await Users.findOne({emailId: req.user.email});
-    
-    if (user.kind === 'buyer'){
-        res.redirect('/buyer');
-    } else if (user.kind === 'seller'){
-        res.redirect('/seller');
-    } else {
-        res.redirect('/register')
-    }
-})
+app.route('/buyer')
+.get(checkAuthenticated, getBuyer)
+.post(checkAuthenticated, acceptRequest);
 
-app.get('/buyer', checkAuthenticated, async (req, res) => {
-    const user = await Users.findOne({emailId: req.user.email});
-    if (user.kind === 'seller'){
-        res.redirect('/seller');
-    } else if (user.kind === 'buyer'){
-        const allUser = await Users.find({});
-        const allRequest = await Request.find({
-            buyer: user._id,
-            state: 'sold'
-        })
-        res.render('buyer', {user: user, allUser: allUser, allRequest: allRequest});
-    } else {
-        res.redirect('register');
-    }
-});
-app.post('/buyer', checkAuthenticated, async (req, res) => {
-    const buyer = await Users.findById(req.body.buyer_id);
-    const seller = await Users.findById(req.body.seller_id);
-    const request = await Request.findOne({
-        owner: req.body.seller_id,
-        state: 'available'
-    });
+app.route('/seller')
+.get(checkAuthenticated, getSeller)
+.post(checkAuthenticated, createRequest);
 
-    // console.log(request);
-
-    const newReq = await Request.findOneAndUpdate({
-        owner: req.body.seller_id,
-        state: 'available'
-    }, {
-        state: 'sold',
-        buyer: buyer._id
-    }, {
-        new: true
-    });
-
-    // console.log(newReq);
-
-    await Users.findByIdAndUpdate(req.body.buyer_id, {
-        requestAccepted: request._id
-    }, {
-        new: true
-    });
-
-    await Users.findByIdAndUpdate(req.body.seller_id, {
-        requestActive: seller.requestActive - 1
-    }, {
-        new: true
-    });
-    
-    res.redirect('/buyer')
-});
-
-app.get('/seller', checkAuthenticated, async (req, res) => {
-    const user = await Users.findOne({emailId: req.user.email});
-    if (user.kind === 'buyer'){
-        res.redirect('/buyer');
-    } else if (user.kind === 'seller'){
-        const allUser = await Users.find({});
-        const allRequest = await Request.find({owner: user._id})
-        res.render('seller', {user: user, allUser: allUser, allRequest: allRequest});
-    } else {
-        res.redirect('register');
-    }
-});
-
-app.post('/seller', checkAuthenticated, async(req, res) => {
-    let request = {};
-    try{
-        const newRequest = {
-            owner: req.body.owner_id,
-            state: 'available'
-        }
-        request = await Request.create(newRequest);
-
-        const user = await Users.findById(req.body.owner_id);
-        // console.log(user);
-        user.requestGenerated.push(request._id)
-
-        await Users.findByIdAndUpdate(req.body.owner_id, {
-            requestGenerated: user.requestGenerated,
-            requestActive: user.requestActive + 1
-        }, {
-            new: true
-        });
-    
-        res.redirect('/seller');
-    } catch(err){
-        console.log(err);
-    }    
-    
-})
-
-app.get('/logout', (req, res) => {
-    user1 = '';
+app.route('/logout').get((req, res) => {
     res.clearCookie('session-token');
-    res.redirect('/')
+    res.redirect('/');
 })
 
-mongoose.connect(url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
-    console.log('Successfully connected to the database');
-}).catch(error => {
-    console.log(error);
+connectDB(process.env.MONGO_URI)
+app.listen(PORT, () => {
+    console.log('Server running successfully');
 })
 
 function checkAuthenticated(req, res, next){
@@ -224,7 +119,3 @@ function checkAuthenticated(req, res, next){
       })
 
 }
-
-app.listen(PORT, () => {
-    console.log('Server running successfully on port 3000');
-})
