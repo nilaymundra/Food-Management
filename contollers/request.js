@@ -5,16 +5,10 @@ const acceptRequest = async (req, res) => {
     
     try{
         const buyer = await userModel.findById(req.body.buyer_id);
-        const seller = await userModel.findById(req.body.seller_id);
-        const request = await requestModel.findOne({
-            owner: req.body.seller_id,
-            state: 'available'
-        });
+        const request = await requestModel.findById(req.body.request_id);
+        const seller = await userModel.findById(request.owner);
     
-        await requestModel.findOneAndUpdate({
-            owner: req.body.seller_id,
-            state: 'available'
-        }, {
+        await requestModel.findByIdAndUpdate(req.body.request_id, {
             state: 'sold',
             buyer: buyer._id
         }, {
@@ -27,7 +21,7 @@ const acceptRequest = async (req, res) => {
             new: true
         });
     
-        await userModel.findByIdAndUpdate(req.body.seller_id, {
+        await userModel.findByIdAndUpdate(seller._id, {
             requestActive: seller.requestActive - 1
         }, {
             new: true
@@ -43,6 +37,7 @@ const createRequest = async(req, res) => {
     let request = {};
     try{
         const newRequest = {
+            type: req.body.type,
             owner: req.body.owner_id,
             state: 'available'
         }

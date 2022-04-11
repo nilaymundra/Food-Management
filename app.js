@@ -21,7 +21,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const connectDB = require('./db/connect');
 const {getProfile} = require('./contollers/profile');
 const {registerUser} = require('./contollers/register');
-const {getBuyer, getSeller} = require('./contollers/user');
+const {getBuyer, getSeller, getSingleSeller} = require('./contollers/user');
 const {acceptRequest, createRequest} = require('./contollers/request');
 
 
@@ -79,6 +79,9 @@ app.route('/profile').get(checkAuthenticated, getProfile)
 app.route('/buyer')
 .get(checkAuthenticated, getBuyer)
 .post(checkAuthenticated, acceptRequest);
+
+app.route('/buyer/:id')
+.get(checkAuthenticated, getSingleSeller)
 
 app.route('/seller')
 .get(checkAuthenticated, getSeller)

@@ -9,11 +9,23 @@
 
     <form action="/seller" method="post">
         <input type="hidden" name="owner_id" value=<%= user._id %>>
+        <input type="text" name="type" required>
         <button type="submit" class="btn btn-dark">Create Your request</button>
     </form>
 
-    <h1>Generated Request and Status</h1>
+    <h1>Pending Request</h1>
 
-    <p><%= allRequest %></p>
+    <% pendingReq.forEach(req => { %>
+        <p><%= req.type %></p>
+    <% }) %>
+
+    <h1>Accepted Req</h1>
+
+    <% acceptReq.forEach(req => { %>
+        <p><%= req.type %></p>
+        <p><%= req.buyer%></p>
+    <% }) %>
+
+    
 
 <%- include('partials/footer') %>

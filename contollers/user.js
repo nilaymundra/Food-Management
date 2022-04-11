@@ -23,13 +23,32 @@ const getSeller = async (req, res) => {
         res.redirect('/buyer');
     } else if (user.kind === 'seller'){
         const allUser = await userModel.find({});
-        const allRequest = await requestModel.find({owner: user._id})
-        res.render('seller', {user: user, allUser: allUser, allRequest: allRequest});
+        const acceptReq = await requestModel.find({
+            owner: user._id,
+            state: 'sold'
+        });
+        const pendingReq = await requestModel.find({
+            owner: user._id,
+            state: 'available'
+        })
+        res.render('seller', {user: user, allUser: allUser, acceptReq: acceptReq, pendingReq: pendingReq});
     } else {
         res.redirect('register');
     }
 }
 
+const getSingleSeller = async (req, res) => {
+    const id = req.params.id;
+    const user = await userModel.findOne({emailId: req.user.email});
+    const seller = await userModel.findById(id);
+    const requestAll = await requestModel.find({
+        owner: id,
+        state: 'available'
+    })
+
+    res.render('individualSeller', {seller: seller, acceptedReq: requestAll, user_id: user._id});
+}
 
 
-module.exports = {getBuyer, getSeller}
+
+module.exports = {getBuyer, getSeller, getSingleSeller}

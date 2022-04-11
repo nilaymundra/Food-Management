@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+
+<title>Seller Info</title>
+</head>
+<body>
+
+    <a href="/buyer">Back</a>
+    <a href="/logout">LogOut</a>
+
+
+    <h1>Seller Info</h1>
+
+    <h3><%= seller.name %></h3>
+    <h3><%= seller.emailId %></h3>
+    <h3><%= seller.mobileNumber %></h3>
+    <h3><%= seller.city %></h3>
+    <h3><%= seller.pinCode %></h3>
+
+    <h1>Available Items</h1>
+    <% requests.forEach(request => { %>
+
+        <p><%= request.type %></p>
+
+        <form action="/buyer" method="post">
+            <input type="hidden" name="buyer_id" value=<%= user_id %>>
+            <input type="hidden" name="request_id" value=<%= request._id %>>
+            <button type="submit" class="btn btn-dark">Buy</button>
+        </form>    
+
+    <% }) %>
+
+
+<%- include('partials/footer') %>

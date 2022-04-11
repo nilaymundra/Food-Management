@@ -20,13 +20,9 @@
             <h3><%= singleUser.city %></h3>
             <h3><%= singleUser.pinCode %></h3>
             <h3><%= singleUser.requestActive %></h3>
+            <h3><a href=<%= `/buyer/${singleUser._id}` %>>Redirect</a></h3>
             
 
-            <form action="/buyer" method="post">
-                <input type="hidden" name="buyer_id" value=<%= user._id %>>
-                <input type="hidden" name="seller_id" value=<%= singleUser._id %>>
-                <button type="submit" class="btn btn-dark">Enter Your request</button>
-            </form>
 
         <% } %>
 
@@ -36,7 +32,7 @@
 
         <% allRequest.forEach(singleRequest => { %>
             
-            <p><%= singleRequest %></p>
+            <p><%= singleRequest.type %></p>
 
         <% }) %>
 
