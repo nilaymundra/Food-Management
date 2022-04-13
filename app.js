@@ -93,9 +93,9 @@ app.route('/logout').get((req, res) => {
     res.redirect('/');
 })
 
-app.route('/about').get((req, res) => res.render(about))
+app.route('/about').get((req, res) => res.render(`about`))
 
-app.route('/contact').get((req, res) => res.render(contact))
+app.route('/contact').get((req, res) => res.render(`contact`))
 
 connectDB(process.env.MONGO_URI)
 app.listen(PORT, () => {
