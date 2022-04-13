@@ -2,39 +2,64 @@
 
     <title>Buyer</title>
 </head>
+<style>
+    table, tr, th, td{
+        border: black solid 1px;
+    }
+</style>
 <body>
+    <%- include('partials/navbar') %>
 
+    
     <h1>Hey there <%= user.name %></h1>
-    <a href="/logout">LogOut</a>
-
     <h1>Here are all the available sellers from where you can buy</h1>
 
     <h1>Seller list</h1>
-
+    <table>
+        <thead>
+            <tr>
+                <th>Seller</th>
+                <th>Email Id: </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
     <% allUser.forEach(singleUser => { %>
 
         <% if (singleUser.kind === "seller" && singleUser.requestActive > 0) { %>
-            <h3><%= singleUser.name %></h3>
-            <h3><%= singleUser.emailId %></h3>
-            <h3><%= singleUser.mobileNumber %></h3>
-            <h3><%= singleUser.city %></h3>
-            <h3><%= singleUser.pinCode %></h3>
-            <h3><%= singleUser.requestActive %></h3>
-            <h3><a href=<%= `/buyer/${singleUser._id}` %>>Redirect</a></h3>
-            
+            <tr>
+            <td><%= singleUser.name %></td>
+            <td><%= singleUser.emailId %></td>
+            <!-- <td><%= singleUser.mobileNumber %></td>
+            <td><%= singleUser.city %></td>
+            <td><%= singleUser.pinCode %></td>
+            <td><%= singleUser.requestActive %></td> -->
+            <td><a href=<%= `/buyer/${singleUser._id}` %>>Redirect</a></td>
+            </tr>
 
 
         <% } %>
 
     <% }) %>
+</tbody>
+</table>
 
         <h1>Accepted Requests</h1>
-
+        <table>
+            <thead>
+                <tr>
+                    <th>Seller</th>
+                    <th>Email Id: </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
         <% allRequest.forEach(singleRequest => { %>
             
             <p><%= singleRequest.type %></p>
 
         <% }) %>
-
+    </tbody>
+    </table>
 
 <%- include('partials/footer') %>

@@ -2,11 +2,16 @@
 
     <title>Buyer</title>
 </head>
+<style>
+    table, th, td, tr {
+        border: solid 1px black;
+    }
+</style>
+
 <body>
+    <%- include('partials/navbar') %>
 
     <h1>Hey there <%= user.name %></h1>
-    <a href="/logout">LogOut</a>
-
     <form action="/seller" method="post">
         <input type="hidden" name="owner_id" value=<%= user._id %>>
         <input type="text" name="type" required>
@@ -20,12 +25,24 @@
     <% }) %>
 
     <h1>Accepted Req</h1>
-
+    <table>
+        <thead>
+            <tr>
+                <th>Food</th>
+                <th>Buyer</th>
+            </tr>
+        </thead>
+    <tbody>
     <% acceptReq.forEach(req => { %>
-        <p><%= req.type %></p>
-        <p><%= req.buyer%></p>
+        <tr>
+            <td> <p><%= req.type %></p> </td>
+            <td> <p><%= req.buyer%></p> </td>
+        </tr>
+        
+        
     <% }) %>
-
+    </tbody>
+    </table>
     
 
 <%- include('partials/footer') %>

@@ -11,3 +11,8 @@
     vertical-align: -.125em;
     fill: currentColor;
   }
+
+  a{
+    text-decoration: none;
+
+  }

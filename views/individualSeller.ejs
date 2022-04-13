@@ -1,11 +1,17 @@
 <%- include('partials/header') %>
 
 <title>Seller Info</title>
+<style>
+    td{
+        padding: 20px;
+    }
+</style>
 </head>
 <body>
 
-    <a href="/buyer">Back</a>
-    <a href="/logout">LogOut</a>
+    <%- include('partials/navbar') %>
+
+    <!-- <a href="/buyer">Back</a> -->
 
 
     <h1>Seller Info</h1>
@@ -15,19 +21,25 @@
     <h3><%= seller.mobileNumber %></h3>
     <h3><%= seller.city %></h3>
     <h3><%= seller.pinCode %></h3>
+    <img src=<%= seller.profilePhoto %> alt="Profile Picture">
 
     <h1>Available Items</h1>
-    <% requests.forEach(request => { %>
-
-        <p><%= request.type %></p>
-
-        <form action="/buyer" method="post">
-            <input type="hidden" name="buyer_id" value=<%= user_id %>>
-            <input type="hidden" name="request_id" value=<%= request._id %>>
-            <button type="submit" class="btn btn-dark">Buy</button>
-        </form>    
-
+    <table>
+        <tbody>
+            <% requests.forEach(request => { %>
+                <tr>
+                    <td><%= request.type %></td>
+                    <td>
+                        <form action="/buyer" method="post">
+                            <input type="hidden" name="buyer_id" value=<%= user_id %>>
+                            <input type="hidden" name="request_id" value=<%= request._id %>>
+                            <button type="submit" class="btn btn-dark">Buy</button>
+                        </form>            
+                    </td>
+                </tr>       
     <% }) %>
+</tbody>
+</table>
 
 
 <%- include('partials/footer') %>

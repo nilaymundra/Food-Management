@@ -23,6 +23,7 @@ const {getProfile} = require('./contollers/profile');
 const {registerUser} = require('./contollers/register');
 const {getBuyer, getSeller, getSingleSeller} = require('./contollers/user');
 const {acceptRequest, createRequest} = require('./contollers/request');
+const res = require('express/lib/response');
 
 
 app.route('/').get((req, res) => {
@@ -91,6 +92,10 @@ app.route('/logout').get((req, res) => {
     res.clearCookie('session-token');
     res.redirect('/');
 })
+
+app.route('/about').get((req, res) => res.render(about))
+
+app.route('/contact').get((req, res) => res.render(contact))
 
 connectDB(process.env.MONGO_URI)
 app.listen(PORT, () => {
