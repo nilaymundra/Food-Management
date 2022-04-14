@@ -46,7 +46,7 @@ const getSingleSeller = async (req, res) => {
         state: 'available'
     })
 
-    res.render('individualSeller', {seller: seller, requests: requestAll, user_id: user._id, loggedIn: true});
+    res.render('individualSeller', {seller: seller, requests: requestAll, user_id: user._id, loggedIn: true, user: user});
 }
 
 

@@ -21,6 +21,8 @@
   <script>
     const login = document.querySelector('a[href="/login"]')
     const logout = document.querySelector('a[href="/logout"]')
+    const buyerA = document.querySelector('a[href="/buyer"]')
+    const sellerA = document.querySelector('a[href="/seller"]')
 
     if(<%= loggedIn %> === true){
       login.style.display = 'none';
@@ -28,5 +30,17 @@
     } else {
       logout.style.display = 'none';
       login.style.display = '';
+      buyerA.style.display = 'none';
+      sellerA.style.display = 'none';
+    }
+
+    console.log(`<%= user.kind %>`);
+
+    if (`<%= user.kind %>` === 'seller'){
+      buyerA.style.display = 'none';
+      sellerA.style.display = '';
+    } else if (`<%= user.kind %>` === 'buyer'){
+      buyerA.style.display = '';
+      sellerA.style.display = 'none';
     }
   </script>

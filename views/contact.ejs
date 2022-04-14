@@ -13,37 +13,37 @@
 
     <section class="w3-container w3-padding-64 header1 cid-qyvisAZ1Bw" id="header1-7" data-rv-view="758">
 
-        <form class="mbr-form" action="https://mobirise.com/" method="post" data-form-title="Mobirise Form"><input type="hidden" data-form-email="true" value="R46ImfT8lRYLhZq6vpVE63L0V35bOdmwHjgn18Tp/HdDujD3JfWe/8bm7YjE2vjZZ7JFQMRNRIinYQUh3aNa2qi1GshxArFhHAffNuiFsZiNLfMCF8KElmS7V7lbqBIL">
+        <form class="mbr-form" action="/contact" method="post" data-form-title="Mobirise Form"><input type="hidden" data-form-email="true" value="R46ImfT8lRYLhZq6vpVE63L0V35bOdmwHjgn18Tp/HdDujD3JfWe/8bm7YjE2vjZZ7JFQMRNRIinYQUh3aNa2qi1GshxArFhHAffNuiFsZiNLfMCF8KElmS7V7lbqBIL">
             <div class="row row-sm-offset">
                 <div data-for="name">
                     <div class="form-group">
-                        <p><input data-form-field="Name" class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="text" placeholder="Name" required id="name"></p>
+                        <p><input data-form-field="Name" class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="text" placeholder="Name" required id="name" name="name"></p>
                         <!-- <label class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7" for="name-form1-4">Name</label> -->
                         <!-- <input type="text" class="form-control" name="name" data-form-field="Name" required="" id="name-form1-4"> -->
                     </div>
                 </div>
                 <div  data-for="email">
                     <div class="form-group">
-                        <p><input data-form-field="email" class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="email" placeholder="E-Mail" required id="email"></p>
+                        <p><input data-form-field="email" class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="email" placeholder="E-Mail" required id="email" name="email"></p>
                         <!-- <label class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7" for="email-form1-4">Email</label> -->
                         <!-- <input type="email" class="form-control" name="email" data-form-field="Email" required="" id="email-form1-4"> -->
                     </div>
                 </div>
                 <div data-for="phone">
                     <div class="form-group">
-                        <p><input data-form-field="tel" class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="tel" placeholder="Phone Number" required id="phoneNumber"></p>
+                        <p><input class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="num" placeholder="Phone Number" required id="phoneNumber" name="mobile"></p>
                         <!-- <label class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7" for="phone-form1-4">Phone</label> -->
                         <!-- <input type="tel" class="form-control" name="phone" data-form-field="Phone" id="phone-form1-4"> -->
                     </div>
                 </div>
             </div>
             <div class="form-group" data-for="message">
-                <p><textarea data-form-field="text" class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="text" placeholder="Message" required id="message" rows="7"></textarea></p>
+                <p><textarea data-form-field="text" class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="text" placeholder="Message" required id="message" rows="7" name="message"></textarea></p>
                 <!-- <label class="form-control-label mbr-fonts-style display-7" for="message-form1-4">Message</label> -->
                 <!-- <textarea type="text" class="form-control" name="message" rows="7" data-form-field="Message" id="message-form1-4"></textarea> -->
             </div>
 
-            <span class="input-group-btn"><button href="" type="submit" class="btn btn-form btn-black-outline display-4">SEND FORM</button></span>
+            <span class="input-group-btn"><button href="" type="submit" class="btn btn-form btn-black-outline display-4" id="send_feedback">SEND FORM</button></span>
         </form>
     
     </section>
@@ -63,14 +63,12 @@
         contact.classList.add('active')
 
         if (<%= loggedIn %> === true){
-            name.disabled = true;
-            email.disabled = true;
-            phoneNumber.disabled = true;
-            name.value = `<%= user.name %>`;
-            email.value = `<%= user.emailId %>`;
-            phoneNumber.value = `<%= user.mobileNumber %>`;
-        } else{
-            console.log("party");
+            name.readOnly = true;
+            email.readOnly = true;
+            phoneNumber.readOnly = true;
+            name.setAttribute('value', `<%= user.name %>`) ;
+            email.setAttribute('value', `<%= user.emailId %>`);
+            phoneNumber.setAttribute('value', `<%= user.mobileNumber %>`);
         }
     </script>
 

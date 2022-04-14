@@ -23,21 +23,26 @@ const {getProfile} = require('./contollers/profile');
 const {registerUser} = require('./contollers/register');
 const {getBuyer, getSeller, getSingleSeller} = require('./contollers/user');
 const {acceptRequest, createRequest} = require('./contollers/request');
+const {postFeedback} = require('./contollers/feedback')
 const res = require('express/lib/response');
 const User = require('./models/Users');
 
 
 app.route('/')
-.get(checkAuthentiction, (req, res) => {
+.get(checkAuthentiction, async (req, res) => {
     let loginUser = true;
+    let user;
     if (req.user == undefined){
         loginUser = false
+        user = {}
+    } else {
+        user = await Users.findOne({emailId: req.user.email})
     }
-    res.render('home.ejs', {loggedIn: loginUser});
+    res.render('home.ejs', {loggedIn: loginUser, user: user});
 })
 
 app.route('/login')
-.get( (req, res) => res.render('login', {loggedIn: false}))
+.get( (req, res) => res.render('login', {loggedIn: false, user:{}}))
 .post((req, res) => {
 
     let tokenId = req.body.tokenId;
@@ -100,12 +105,16 @@ app.route('/logout').get((req, res) => {
 })
 
 app.route('/about')
-.get(checkAuthentiction, (req, res) => {
+.get(checkAuthentiction, async (req, res) => {
     let loginUser = true;
+    let user;
     if (req.user == undefined){
         loginUser = false
+        user = {}
+    } else {
+        user = await Users.findOne({emailId: req.user.email})
     }
-    res.render(`about`, {loggedIn: loginUser})
+    res.render(`about`, {loggedIn: loginUser, user: user})
 })
 
 app.route('/contact')
@@ -120,7 +129,7 @@ app.route('/contact')
     }
     res.render(`contact`, {loggedIn: loginUser, user: user})
 })
-.post()
+.post(checkAuthentiction, postFeedback)
 
 connectDB(process.env.MONGO_URI)
 app.listen(PORT, () => {
