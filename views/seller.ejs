@@ -44,5 +44,18 @@
     </tbody>
     </table>
     
+    <script>
+        const navbars = document.querySelectorAll('.nav-item a')
+        const seller = document.querySelector('a[href="/contact"]')
+
+
+        navbars.forEach(navbar => {
+            navbar.classList.remove('active');
+        })
+
+        seller.classList.add('active')
+
+
+    </script>
 
 <%- include('partials/footer') %>

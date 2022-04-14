@@ -17,3 +17,16 @@
       </div>
     </header>
   </div>
+
+  <script>
+    const login = document.querySelector('a[href="/login"]')
+    const logout = document.querySelector('a[href="/logout"]')
+
+    if(<%= loggedIn %> === true){
+      login.style.display = 'none';
+      logout.style.display = 'inherit';
+    } else {
+      logout.style.display = 'none';
+      login.style.display = '';
+    }
+  </script>

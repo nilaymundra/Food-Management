@@ -6,14 +6,17 @@
     table, tr, th, td{
         border: black solid 1px;
     }
+    .profile{
+        align-items: center;
+        margin-left: 100px;
+        margin-right: 100px;
+    }
 </style>
 <body>
     <%- include('partials/navbar') %>
-
-    
-    <h1>Hey there <%= user.name %></h1>
-    <h1>Here are all the available sellers from where you can buy</h1>
-
+    <div class="profile">
+        <h1>Hey there <%= user.name %></h1>
+        <h1>Here are all the available sellers from where you can buy</h1>
     <h1>Seller list</h1>
     <table>
         <thead>
@@ -61,5 +64,19 @@
         <% }) %>
     </tbody>
     </table>
+</div>
+    <script>
+        const navbars = document.querySelectorAll('.nav-item a')
+        const buyer = document.querySelector('a[href="/contact"]')
+
+
+        navbars.forEach(navbar => {
+            navbar.classList.remove('active');
+        })
+
+        buyer.classList.add('active')
+
+
+    </script>
 
 <%- include('partials/footer') %>

@@ -24,14 +24,20 @@ const {registerUser} = require('./contollers/register');
 const {getBuyer, getSeller, getSingleSeller} = require('./contollers/user');
 const {acceptRequest, createRequest} = require('./contollers/request');
 const res = require('express/lib/response');
+const User = require('./models/Users');
 
 
-app.route('/').get((req, res) => {
-    res.render('home.ejs');
+app.route('/')
+.get(checkAuthentiction, (req, res) => {
+    let loginUser = true;
+    if (req.user == undefined){
+        loginUser = false
+    }
+    res.render('home.ejs', {loggedIn: loginUser});
 })
 
 app.route('/login')
-.get( (req, res) => res.render('login'))
+.get( (req, res) => res.render('login', {loggedIn: false}))
 .post((req, res) => {
 
     let tokenId = req.body.tokenId;
@@ -72,7 +78,7 @@ app.route('/login')
 })
 
 app.route('/register')
-.get(checkAuthenticated, (req, res) => res.render('register', {user: req.user}))
+.get(checkAuthenticated, (req, res) => res.render('register', {user: req.user, loggedIn: true}))
 .post(checkAuthenticated, registerUser);
 
 app.route('/profile').get(checkAuthenticated, getProfile)
@@ -93,9 +99,28 @@ app.route('/logout').get((req, res) => {
     res.redirect('/');
 })
 
-app.route('/about').get((req, res) => res.render(`about`))
+app.route('/about')
+.get(checkAuthentiction, (req, res) => {
+    let loginUser = true;
+    if (req.user == undefined){
+        loginUser = false
+    }
+    res.render(`about`, {loggedIn: loginUser})
+})
 
-app.route('/contact').get((req, res) => res.render(`contact`))
+app.route('/contact')
+.get(checkAuthentiction, async (req, res) => {
+    let loginUser = true;
+    let user;
+    if (req.user == undefined){
+        loginUser = false;
+        user = {};
+    } else {
+        user = await Users.findOne({emailId: req.user.email})
+    }
+    res.render(`contact`, {loggedIn: loginUser, user: user})
+})
+.post()
 
 connectDB(process.env.MONGO_URI)
 app.listen(PORT, () => {
@@ -124,6 +149,31 @@ function checkAuthenticated(req, res, next){
       })
       .catch(err=>{
           res.redirect('/login')
+      })
+}
+
+function checkAuthentiction(req, res, next){
+
+    let token = req.cookies['session-token'];
+
+    let user = {};
+    async function verify() {
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        });
+        const payload = ticket.getPayload();
+        user.name = payload.name;
+        user.email = payload.email;
+        user.picture = payload.picture;
+      }
+      verify()
+      .then(()=>{
+          req.user = user;
+          next();
+      })
+      .catch(err=>{
+          next();
       })
 
 }

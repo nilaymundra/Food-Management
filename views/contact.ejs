@@ -1,41 +1,78 @@
 <%- include('partials/header') %>
 <title>Contact Us</title>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
-
+<style>
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Playfair Display";
+      letter-spacing: 5px;
+    }
+    </style>
 <body>
     <%- include('partials/navbar') %>
 
-    <section class="header1 cid-qyvisAZ1Bw" id="header1-7" data-rv-view="758">
+    <section class="w3-container w3-padding-64 header1 cid-qyvisAZ1Bw" id="header1-7" data-rv-view="758">
 
         <form class="mbr-form" action="https://mobirise.com/" method="post" data-form-title="Mobirise Form"><input type="hidden" data-form-email="true" value="R46ImfT8lRYLhZq6vpVE63L0V35bOdmwHjgn18Tp/HdDujD3JfWe/8bm7YjE2vjZZ7JFQMRNRIinYQUh3aNa2qi1GshxArFhHAffNuiFsZiNLfMCF8KElmS7V7lbqBIL">
             <div class="row row-sm-offset">
-                <div class="col-md-4 multi-horizontal" data-for="name">
+                <div data-for="name">
                     <div class="form-group">
-                        <label class="form-control-label mbr-fonts-style display-7" for="name-form1-4">Name</label>
-                        <input type="text" class="form-control" name="name" data-form-field="Name" required="" id="name-form1-4">
+                        <p><input data-form-field="Name" class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="text" placeholder="Name" required id="name"></p>
+                        <!-- <label class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7" for="name-form1-4">Name</label> -->
+                        <!-- <input type="text" class="form-control" name="name" data-form-field="Name" required="" id="name-form1-4"> -->
                     </div>
                 </div>
-                <div class="col-md-4 multi-horizontal" data-for="email">
+                <div  data-for="email">
                     <div class="form-group">
-                        <label class="form-control-label mbr-fonts-style display-7" for="email-form1-4">Email</label>
-                        <input type="email" class="form-control" name="email" data-form-field="Email" required="" id="email-form1-4">
+                        <p><input data-form-field="email" class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="email" placeholder="E-Mail" required id="email"></p>
+                        <!-- <label class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7" for="email-form1-4">Email</label> -->
+                        <!-- <input type="email" class="form-control" name="email" data-form-field="Email" required="" id="email-form1-4"> -->
                     </div>
                 </div>
-                <div class="col-md-4 multi-horizontal" data-for="phone">
+                <div data-for="phone">
                     <div class="form-group">
-                        <label class="form-control-label mbr-fonts-style display-7" for="phone-form1-4">Phone</label>
-                        <input type="tel" class="form-control" name="phone" data-form-field="Phone" id="phone-form1-4">
+                        <p><input data-form-field="tel" class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="tel" placeholder="Phone Number" required id="phoneNumber"></p>
+                        <!-- <label class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7" for="phone-form1-4">Phone</label> -->
+                        <!-- <input type="tel" class="form-control" name="phone" data-form-field="Phone" id="phone-form1-4"> -->
                     </div>
                 </div>
             </div>
             <div class="form-group" data-for="message">
-                <label class="form-control-label mbr-fonts-style display-7" for="message-form1-4">Message</label>
-                <textarea type="text" class="form-control" name="message" rows="7" data-form-field="Message" id="message-form1-4"></textarea>
+                <p><textarea data-form-field="text" class="w3-input w3-padding-16 form-control-label mbr-fonts-style display-7 form-control" type="text" placeholder="Message" required id="message" rows="7"></textarea></p>
+                <!-- <label class="form-control-label mbr-fonts-style display-7" for="message-form1-4">Message</label> -->
+                <!-- <textarea type="text" class="form-control" name="message" rows="7" data-form-field="Message" id="message-form1-4"></textarea> -->
             </div>
 
             <span class="input-group-btn"><button href="" type="submit" class="btn btn-form btn-black-outline display-4">SEND FORM</button></span>
         </form>
     
     </section>
+
+
+    <script>
+        const navbars = document.querySelectorAll('.nav-item a')
+        const contact = document.querySelector('a[href="/contact"]')
+        const name = document.querySelector('#name');
+        const email = document.querySelector('#email');
+        const phoneNumber = document.querySelector('#phoneNumber');
+
+        navbars.forEach(navbar => {
+            navbar.classList.remove('active');
+        })
+
+        contact.classList.add('active')
+
+        if (<%= loggedIn %> === true){
+            name.disabled = true;
+            email.disabled = true;
+            phoneNumber.disabled = true;
+            name.value = `<%= user.name %>`;
+            email.value = `<%= user.emailId %>`;
+            phoneNumber.value = `<%= user.mobileNumber %>`;
+        } else{
+            console.log("party");
+        }
+    </script>
+
 
     <%- include('partials/footer') %>

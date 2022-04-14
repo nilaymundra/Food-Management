@@ -2,6 +2,19 @@
 <title>About Us</title>
 </head>
 
-<body>
     <%- include('partials/navbar') %>
+
+    <script>
+        const navbars = document.querySelectorAll('.nav-item a')
+        const about = document.querySelector('a[href="/about"]')
+
+        navbars.forEach(navbar => {
+            navbar.classList.remove('active');
+        })
+
+        about.classList.add('active')
+
+
+    </script>
+
     <%- include('partials/footer') %>

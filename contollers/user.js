@@ -11,7 +11,7 @@ const getBuyer = async (req, res) => {
             buyer: user._id,
             state: 'sold'
         })
-        res.render('buyer', {user: user, allUser: allUser, allRequest: allRequest});
+        res.render('buyer', {user: user, allUser: allUser, allRequest: allRequest, loggedIn: true});
     } else {
         res.redirect('register');
     }
@@ -31,7 +31,7 @@ const getSeller = async (req, res) => {
             owner: user._id,
             state: 'available'
         })
-        res.render('seller', {user: user, allUser: allUser, acceptReq: acceptReq, pendingReq: pendingReq});
+        res.render('seller', {user: user, allUser: allUser, acceptReq: acceptReq, pendingReq: pendingReq, loggedIn: true});
     } else {
         res.redirect('register');
     }
@@ -46,7 +46,7 @@ const getSingleSeller = async (req, res) => {
         state: 'available'
     })
 
-    res.render('individualSeller', {seller: seller, requests: requestAll, user_id: user._id});
+    res.render('individualSeller', {seller: seller, requests: requestAll, user_id: user._id, loggedIn: true});
 }
 
 
