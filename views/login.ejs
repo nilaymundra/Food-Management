@@ -2,14 +2,35 @@
 
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id" content=<%= process.env.GOOGLE_CLIENT_ID %>>
-    <script src="https://apis.google.com/js/platform.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>Login</title>
   </head>
+  <style>
+    .log{
+      margin: auto;
+      width: 30%;
+    }
+    .bor{
+      border: 1px solid lightgrey;
+      padding: 20px;
+      width: 50%;
+      margin: auto;
+    }
+    .bor2 {
+      /* width: 50%; */
+      margin-left: 35%;
+    }
+  </style>
+
   <body>
     <%- include('partials/navbar') %>
-
-    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" style="display: block;"></div>
-
+    <div class="bor">
+      <div class="bor2">
+        <h2>Login with</h2>
+        <br>
+      </div>
+    <div class="g-signin2 log" data-onsuccess="onSignIn" data-theme="dark" style="display: block;"></div>
+  </div>
 <script>
   function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
