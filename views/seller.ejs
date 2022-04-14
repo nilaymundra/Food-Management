@@ -25,18 +25,22 @@
     <% }) %>
 
     <h1>Accepted Req</h1>
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>Food</th>
-                <th>Buyer</th>
+                <th>Buyer Name</th>
+                <th>Buyer Mobile</th>
+                <th>Buyer Email</th>
             </tr>
         </thead>
     <tbody>
     <% acceptReq.forEach(req => { %>
         <tr>
-            <td> <p><%= req.type %></p> </td>
-            <td> <p><%= req.buyer%></p> </td>
+            <td> <p><%= req.request.type %></p> </td>
+            <td> <p><%= req.buyer.name%></p> </td>
+            <td> <p><%= req.buyer.mobileNumber%></p> </td>
+            <td> <p><%= req.buyer.emailId%></p> </td>
         </tr>
         
         
@@ -46,7 +50,7 @@
     
     <script>
         const navbars = document.querySelectorAll('.nav-item a')
-        const seller = document.querySelector('a[href="/contact"]')
+        const seller = document.querySelector('a[href="/seller"]')
 
 
         navbars.forEach(navbar => {

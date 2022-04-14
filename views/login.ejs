@@ -41,8 +41,18 @@
       }
     </script>
 
-    <script>
-      
-    </script>
+<script>
+  const navbars = document.querySelectorAll('.nav-item a')
+  const loginDiv = document.querySelector('a[href="/login"] button')
+
+
+  navbars.forEach(navbar => {
+      navbar.classList.remove('active');
+  })
+
+  loginDiv.classList.add('active');
+
+
+</script>
 
 <%- include('partials/footer') %>

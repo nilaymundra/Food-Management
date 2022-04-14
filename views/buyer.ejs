@@ -18,7 +18,7 @@
         <h1>Hey there <%= user.name %></h1>
         <h1>Here are all the available sellers from where you can buy</h1>
     <h1>Seller list</h1>
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>Seller</th>
@@ -37,7 +37,7 @@
             <td><%= singleUser.city %></td>
             <td><%= singleUser.pinCode %></td>
             <td><%= singleUser.requestActive %></td> -->
-            <td><a href=<%= `/buyer/${singleUser._id}` %>>Redirect</a></td>
+            <td><a href=<%= `/buyer/${singleUser._id}` %>><button class="btn btn-secondary">Redirect</button></a></td>
             </tr>
 
 
@@ -48,26 +48,26 @@
 </table>
 
         <h1>Accepted Requests</h1>
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Seller</th>
-                    <th>Email Id: </th>
-                    <th></th>
+                    <th>Food Type</th>
                 </tr>
             </thead>
             <tbody>
-        <% allRequest.forEach(singleRequest => { %>
-            
-            <p><%= singleRequest.type %></p>
-
+        <% requests.forEach(request => { %>
+            <tr>
+                <td><%= request.seller.name %></td>
+                <td><%= request.request.type %></td>
+        </tr>
         <% }) %>
     </tbody>
     </table>
 </div>
     <script>
         const navbars = document.querySelectorAll('.nav-item a')
-        const buyer = document.querySelector('a[href="/contact"]')
+        const buyer = document.querySelector('a[href="/buyer"]')
 
 
         navbars.forEach(navbar => {

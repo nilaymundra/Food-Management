@@ -6,12 +6,19 @@ const getBuyer = async (req, res) => {
     if (user.kind === 'seller'){
         res.redirect('/seller');
     } else if (user.kind === 'buyer'){
+        let requests = [];
         const allUser = await userModel.find({});
         const allRequest = await requestModel.find({
             buyer: user._id,
             state: 'sold'
         })
-        res.render('buyer', {user: user, allUser: allUser, allRequest: allRequest, loggedIn: true});
+
+        for (const i in allRequest) {
+            const seller = await userModel.findById(allRequest[i].owner);
+
+            requests.push({request: allRequest[i], seller: seller});
+        }
+        res.render('buyer', {user: user, allUser: allUser, requests: requests, loggedIn: true});
     } else {
         res.redirect('register');
     }
@@ -22,6 +29,7 @@ const getSeller = async (req, res) => {
     if (user.kind === 'buyer'){
         res.redirect('/buyer');
     } else if (user.kind === 'seller'){
+        const req = [];
         const allUser = await userModel.find({});
         const acceptReq = await requestModel.find({
             owner: user._id,
@@ -31,7 +39,13 @@ const getSeller = async (req, res) => {
             owner: user._id,
             state: 'available'
         })
-        res.render('seller', {user: user, allUser: allUser, acceptReq: acceptReq, pendingReq: pendingReq, loggedIn: true});
+        for (const i in acceptReq) {
+            const buyer = await userModel.findById(acceptReq[i].buyer);
+
+            req.push({request: acceptReq[i], buyer: buyer});
+
+        }
+        res.render('seller', {user: user, allUser: allUser, acceptReq: req, pendingReq: pendingReq, loggedIn: true});
     } else {
         res.redirect('register');
     }

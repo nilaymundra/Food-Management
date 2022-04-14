@@ -24,7 +24,7 @@
     <img src=<%= seller.profilePhoto %> alt="Profile Picture">
 
     <h1>Available Items</h1>
-    <table>
+    <table class="table">
         <tbody>
             <% requests.forEach(request => { %>
                 <tr>
@@ -41,5 +41,17 @@
 </tbody>
 </table>
 
+<script>
+    const navbars = document.querySelectorAll('.nav-item a')
+    const buyer = document.querySelector('a[href="/buyer"]')
 
+
+    navbars.forEach(navbar => {
+        navbar.classList.remove('active');
+    })
+
+    buyer.classList.add('active')
+
+
+</script>
 <%- include('partials/footer') %>
