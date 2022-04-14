@@ -81,8 +81,11 @@
         </div>
       </section>
     <script>
-        function validphone(phone) {
+        const navbars = document.querySelectorAll('.nav-item a')
 
-        }
+        navbars.forEach(navbar => {
+            navbar.classList.remove('active');
+        })
+        
     </script>
 <%- include('partials/footer') %>

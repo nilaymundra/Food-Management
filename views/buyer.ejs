@@ -6,17 +6,46 @@
     table, tr, th, td{
         border: black solid 1px;
     }
-    .profile{
-        align-items: center;
-        margin-left: 100px;
-        margin-right: 100px;
-    }
+    td{
+            padding: 20px;
+        }
+        .profile{
+            align-items: center;
+            margin-left: 100px;
+            margin-right: 100px;
+        }
+        .pro{
+            display: flex;
+            flex-direction: row-gap;
+            margin-top: 3em;
+            margin-bottom: 3em;
+        }
+        .buy{
+            align-items: right;
+        }
+        img{
+            border-radius: 50%;
+            margin-right: 3em;
+        }
 </style>
 <body>
     <%- include('partials/navbar') %>
     <div class="profile">
-        <h1>Hey there <%= user.name %></h1>
-        <h1>Here are all the available sellers from where you can buy</h1>
+        <div class="profile">
+            <h1>Profile: </h1>
+            <div class="pro">
+                <div>
+                    <img src=<%= user.profilePhoto %> alt="Profile Picture" height="200"  >
+                </div>
+                <div>
+                    <h3><%= user.name %></h3>
+                    <h3><%= user.emailId %></h3>
+                    <h3><%= user.mobileNumber %></h3>
+                    <h3><%= user.city %></h3>
+                    <h3><%= user.pinCode %></h3>
+                </div>  
+            </div>
+        <h3>Here are all the available sellers from where you can buy</h3>
     <h1>Seller list</h1>
     <table class="table">
         <thead>
@@ -37,7 +66,7 @@
             <td><%= singleUser.city %></td>
             <td><%= singleUser.pinCode %></td>
             <td><%= singleUser.requestActive %></td> -->
-            <td><a href=<%= `/buyer/${singleUser._id}` %>><button class="btn btn-secondary">Redirect</button></a></td>
+            <td><a href=<%= `/buyer/${singleUser._id}` %>><button class="btn btn-secondary">More</button></a></td>
             </tr>
 
 
