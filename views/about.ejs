@@ -1,9 +1,40 @@
 <%- include('partials/header') %>
 <title>About Us</title>
 </head>
+<style>
+    .about{
+        display: flex;
+    }
+    img, p{
+        display: block;
+  margin-left: auto;
+  margin-right: auto;
+  /* width: 50%; */
+        /* width: 50%; */
+    }
+</style>
 
-    <%- include('partials/navbar') %>
-
+    <%- include('partials/navbar') %>\
+    <div class="about">
+        <div>
+            <img src="/img/5.jpeg">
+        </div>
+        
+    <br>
+    <div>
+        <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam suscipit nam totam unde sunt necessitatibus reprehenderit voluptatum quos, eos amet minus quibusdam ut natus a optio aliquid sed, odio delectus?
+        </p>
+        <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam suscipit nam totam unde sunt necessitatibus reprehenderit voluptatum quos, eos amet minus quibusdam ut natus a optio aliquid sed, odio delectus?
+        </p>
+        <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam suscipit nam totam unde sunt necessitatibus reprehenderit voluptatum quos, eos amet minus quibusdam ut natus a optio aliquid sed, odio delectus?
+        </p>
+    </div>
+    
+    </div>
+    
     <script>
         const navbars = document.querySelectorAll('.nav-item a')
         const about = document.querySelector('a[href="/about"]')
