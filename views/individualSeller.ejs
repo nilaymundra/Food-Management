@@ -5,6 +5,24 @@
     td{
         padding: 20px;
     }
+    .profile{
+        align-items: center;
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+    .pro{
+        display: flex;
+        flex-direction: row-gap;
+        margin-top: 3em;
+        margin-bottom: 3em;
+    }
+    .buy{
+        align-items: right;
+    }
+    img{
+        border-radius: 50%;
+        margin-right: 3em;
+    }
 </style>
 </head>
 <body>
@@ -13,15 +31,21 @@
 
     <!-- <a href="/buyer">Back</a> -->
 
-
-    <h1>Seller Info</h1>
-
-    <h3><%= seller.name %></h3>
-    <h3><%= seller.emailId %></h3>
-    <h3><%= seller.mobileNumber %></h3>
-    <h3><%= seller.city %></h3>
-    <h3><%= seller.pinCode %></h3>
-    <img src=<%= seller.profilePhoto %> alt="Profile Picture">
+    <div class="profile">
+        <h1>Seller Info</h1>
+        <div class="pro">
+            <div>
+                <img src=<%= seller.profilePhoto %> alt="Profile Picture" height="200" >
+            </div>
+            <div>
+                <h3><%= seller.name %></h3>
+                <h3><%= seller.emailId %></h3>
+                <h3><%= seller.mobileNumber %></h3>
+                <h3><%= seller.city %></h3>
+                <h3><%= seller.pinCode %></h3>
+            </div>  
+        </div>
+    
 
     <h1>Available Items</h1>
     <table class="table">
@@ -29,7 +53,7 @@
             <% requests.forEach(request => { %>
                 <tr>
                     <td><%= request.type %></td>
-                    <td>
+                    <td class="float-right">
                         <form action="/buyer" method="post">
                             <input type="hidden" name="buyer_id" value=<%= user_id %>>
                             <input type="hidden" name="request_id" value=<%= request._id %>>
@@ -40,6 +64,8 @@
     <% }) %>
 </tbody>
 </table>
+    </div>
+    
 
 <script>
     const navbars = document.querySelectorAll('.nav-item a')
